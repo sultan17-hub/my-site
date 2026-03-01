@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NorthStar — Education & Career Guide</title>
+  <meta name="description" content="NorthStar helps students, parents, and planners understand education and career pathways with clear insights, resources, and support." />
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --line: rgba(255,255,255,.14);
+      --accent: #67e8f9;   /* cyan */
+      --accent2: #a78bfa;  /* purple */
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1100px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 900px at 10% 10%, rgba(103,232,249,.18), transparent 55%),
+        radial-gradient(900px 800px at 90% 15%, rgba(167,139,250,.18), transparent 55%),
+        radial-gradient(900px 700px at 50% 100%, rgba(103,232,249,.10), transparent 55%),
+        var(--bg);
+      line-height:1.55;
+    }
+
+    a{ color: var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    /* Layout */
+    .container{ width:min(var(--max), calc(100% - 40px)); margin:0 auto; }
+    .grid{ display:grid; gap:16px; }
+    .grid.two{ grid-template-columns: 1.2fr .8fr; }
+    .grid.three{ grid-template-columns: repeat(3, 1fr); }
+
+    @media (max-width: 900px){
+      .grid.two, .grid.three{ grid-template-columns: 1fr; }
+    }
+
+    /* Top nav */
+    .nav{
+      position: sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      background: rgba(11,18,32,.55);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 12px 0;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .logo{
+      width:34px; height:34px; border-radius:12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(103,232,249,.95), transparent 55%),
+        radial-gradient(circle at 65% 65%, rgba(167,139,250,.95), transparent 60%),
+        rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: 0 10px 25px rgba(0,0,0,.25);
+    }
+    .nav-links{
+      display:flex; gap:14px; flex-wrap:wrap;
+      justify-content:flex-end;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .nav-links a{ color: var(--muted); padding:6px 10px; border-radius: 999px; }
+    .nav-links a:hover{ color: var(--text); background: rgba(255,255,255,.06); text-decoration:none; }
+    .btn{
+      display:inline-flex;
+      align-items:center; justify-content:center;
+      gap:8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      box-shadow: 0 10px 25px rgba(0,0,0,.22);
+      cursor:pointer;
+      font-weight:650;
+    }
+    .btn:hover{ background: rgba(255,255,255,.11); }
+
+    /* Hero */
+    header.hero{
+      padding: 46px 0 18px;
+    }
+    .hero-card{
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(500px 300px at 10% 10%, rgba(103,232,249,.20), transparent 60%),
+        radial-gradient(500px 300px at 85% 25%, rgba(167,139,250,.22), transparent 65%);
+      pointer-events:none;
+      filter: blur(0px);
+    }
+    .hero-content{ position:relative; z-index:2; }
+    .kicker{
+      display:inline-flex;
+      gap:10px; align-items:center;
+      color: var(--muted);
+      font-weight:600;
+      font-size: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      padding: 6px 10px;
+      border-radius:999px;
+      margin-bottom:12px;
+    }
+    h1{
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height:1.1;
+      letter-spacing:-.6px;
+    }
+    .sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 68ch;
+    }
+    .hero-actions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin: 16px 0 6px;
+    }
+    .btn.primary{
+      border-color: rgba(103,232,249,.38);
+      background: linear-gradient(180deg, rgba(103,232,249,.22), rgba(103,232,249,.12));
+    }
+    .statbar{
+      display:flex; gap:14px; flex-wrap:wrap;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    /* Sections */
+    section{ padding: 18px 0; }
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:12px; margin: 6px 0 10px;
+    }
+    .section-title h2{
+      margin:0;
+      font-size: 20px;
+      letter-spacing:-.2px;
+    }
+    .section-title p{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 10px 28px rgba(0,0,0,.18);
+    }
+    .card strong{ color: var(--text); }
+    .muted{ color: var(--muted); }
+    ul{ margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+    li{ margin: 6px 0; }
+
+    .feature{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .feature h3{ margin: 0 0 6px; font-size: 16px; }
+    .feature p{ margin:0; color: var(--muted); font-size: 14px; }
+
+    /* Prototype placeholders */
+    .proto{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 720px){ .proto{ grid-template-columns: 1fr; } }
+
+    .wire{
+      border:1px dashed rgba(255,255,255,.24);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 140px;
+    }
+    .wire .tag{
+      display:inline-block;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,.75);
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05);
+      padding: 4px 8px;
+      border-radius:999px;
+      margin-bottom:10px;
+    }
+    .wire p{ margin: 0; color: var(--muted); font-size: 14px; }
+
+    /* Timeline */
+    .timeline{ display:grid; gap:10px; }
+    .step{
+      display:flex; gap:12px; align-items:flex-start;
+      padding: 12px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+    }
+    .dot{
+      width: 12px; height: 12px; margin-top: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(103,232,249,.12);
+      flex: 0 0 auto;
+    }
+    .step h4{ margin:0 0 4px; font-size: 15px; }
+    .step p{ margin:0; color: var(--muted); font-size: 14px; }
+
+    /* Authors */
+    .author{
+      display:flex; gap:12px; align-items:center;
+      padding: 14px;
+      border-radius: 16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+    }
+    .avatar{
+      width: 46px; height:46px; border-radius: 16px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; color: rgba(255,255,255,.85);
+      flex: 0 0 auto;
+    }
+    .author small{ color: var(--muted); display:block; margin-top:2px; }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 40px;
+      border-top: 1px solid var(--line);
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .footgrid{
+      display:grid; gap:12px;
+      grid-template-columns: 1.3fr .7fr;
+    }
+    @media (max-width: 900px){ .footgrid{ grid-template-columns: 1fr; } }
+
+    /* Toast */
+    .toast{
+      position:fixed;
+      left:50%; bottom: 20px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,.62);
+      color: rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.18);
+      padding: 10px 12px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      font-size: 14px;
+      display:none;
+      z-index: 60;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand" aria-label="NorthStar">
+        <div class="logo" aria-hidden="true"></div>
+        <span>NorthStar</span>
+      </div>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#description">Project</a>
+        <a href="#functional">Functional</a>
+        <a href="#technical">Technical</a>
+        <a href="#prototype">Prototype</a>
+        <a href="#authors">Authors</a>
+        <a href="#extra">More</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="kicker">✨ Welcome to NorthStar!</div>
+          <h1>Your guide in education and career choices.</h1>
+          <p class="sub">
+            NorthStar is built for people who are searching for direction, feeling uncertain about their next steps,
+            or wanting a clearer understanding of future pathways.
+          </p>
+
+          <div class="grid two">
+            <div class="card">
+              <p class="muted" style="margin:0 0 10px;">
+                Here you will find:
+              </p>
+              <ul>
+                <li>clear insights into education and career options</li>
+                <li>useful resources, opportunities, and practical advice</li>
+                <li>support for students, parents, and anyone planning their future</li>
+              </ul>
+              <p class="muted" style="margin:12px 0 0;">
+                Our goal is to help you <strong>see the path</strong> — not get lost among the options.
+                Stay with us and find your NorthStar.
+              </p>
+
+              <div class="hero-actions">
+                <a class="btn primary" href="#description">Explore the Project</a>
+                <button class="btn" id="copyLinkBtn" type="button">Copy Website Link</button>
+              </div>
+
+              <div class="statbar" aria-label="Quick highlights">
+                <span class="pill">🎯 Clarity</span>
+                <span class="pill">🧭 Guidance</span>
+                <span class="pill">🚀 Opportunities</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 style="margin:0 0 6px;">Who is this for?</h3>
+              <p class="muted" style="margin:0 0 12px;">
+                NorthStar helps different users in different ways:
+              </p>
+              <div class="grid" style="gap:10px;">
+                <div class="feature">
+                  <h3>Students</h3>
+                  <p>Discover majors, careers, and next steps with clear explanations.</p>
+                </div>
+                <div class="feature">
+                  <h3>Parents</h3>
+                  <p>Understand options, costs, and realistic pathways to support your child.</p>
+                </div>
+                <div class="feature">
+                  <h3>Career changers</h3>
+                  <p>Find reskilling routes, short courses, and entry points into new fields.</p>
+                </div>
+              </div>
+            </div>
+          </div><!-- /grid -->
+        </div><!-- /hero-content -->
+      </div><!-- /hero-card -->
+    </div><!-- /container -->
+  </header>
+
+  <!-- 1) PROJECT DESCRIPTION -->
+  <section id="description">
+    <div class="container">
+      <div class="section-title">
+        <h2>1) Project Description</h2>
+        <p>What it is, why it exists, who it helps, how it works, why support it</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <p style="margin:0 0 10px;">
+            <strong>What is NorthStar?</strong><br />
+            NorthStar is a web platform that helps people explore education and career pathways in a structured, easy way.
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <strong>Problem it solves</strong><br />
+            Many students (and parents) feel overwhelmed by too many choices, unclear requirements, and confusing advice.
+            This leads to stress, wasted time, and choosing a path without confidence.
+          </p>
+
+          <p style="margin:0 0 10px;">
+            <strong>Why the problem matters</strong><br />
+            Education and career decisions affect finances, motivation, and long-term opportunities.
+            Getting direction early can reduce dropouts, improve planning, and increase satisfaction.
+          </p>
+
+          <p style="margin:0;">
+            <strong>What makes it unique</strong><br />
+            NorthStar combines: simple explanations + curated resources + a step-by-step decision flow
+            (not just “lists of professions”).
+          </p>
+        </div>
+
+        <div class="card">
+          <p style="margin:0 0 10px;">
+            <strong>How it works (simple flow)</strong>
+          </p>
+          <ol class="muted" style="margin:0; padding-left:18px;">
+            <li>Answer quick questions about interests, strengths, and goals.</li>
+            <li>Get suggested pathways (majors, careers, short courses).</li>
+            <li>See requirements, time, cost, and possible next steps.</li>
+            <li>Save a plan and track progress with a timeline.</li>
+          </ol>
+
+          <hr style="border:none;border-top:1px solid var(--line); margin:14px 0;" />
+
+          <p style="margin:0 0 10px;">
+            <strong>Why people should support it</strong>
+          </p>
+          <ul>
+            <li>Helps young people make informed decisions.</li>
+            <li>Reduces confusion and “random choices”.</li>
+            <li>Creates equal access to guidance and opportunities.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2) FUNCTIONAL REQUIREMENTS -->
+  <section id="functional">
+    <div class="container">
+      <div class="section-title">
+        <h2>2) Functional Requirements</h2>
+        <p>What the product must do</p>
+      </div>
+
+      <div class="grid three">
+        <div class="card">
+          <h3 style="margin:0 0 8px;">Core Features</h3>
+          <ul>
+            <li>User can explore education and career options by category.</li>
+            <li>User can take a short “pathfinder” quiz and get suggestions.</li>
+            <li>User can view each pathway with skills, time, and requirements.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px;">User Accounts</h3>
+          <ul>
+            <li>User can register/login (optional MVP if time is limited).</li>
+            <li>User can save favorites (careers, majors, resources).</li>
+            <li>User can create a simple personal plan/checklist.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px;">Resources & Support</h3>
+          <ul>
+            <li>User can access curated resources (links, scholarships, courses).</li>
+            <li>User can find opportunities (events, internships, competitions).</li>
+            <li>User can contact/support via feedback form.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3) TECHNICAL REQUIREMENTS -->
+  <section id="technical">
+    <div class="container">
+      <div class="section-title">
+        <h2>3) Technical Requirements</h2>
+        <p>What technologies will be used</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3 style="margin:0 0 8px;">Tech Stack (Planned)</h3>
+          <ul>
+            <li><strong>HTML + CSS</strong> for layout and styling</li>
+            <li><strong>JavaScript</strong> (optional) for interactions (quiz, saving)</li>
+            <li><strong>Hosting:</strong> GitHub Pages (public)</li>
+            <li><strong>Version control:</strong> Git + GitHub repository</li>
+          </ul>
+          <p class="muted" style="margin:12px 0 0;">
+            Future upgrades (if time/resources allow): a small database (Firebase/Supabase) to store user plans.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px;">Links (Replace with yours)</h3>
+          <ul>
+            <li><strong>Public Website:</strong> <a href="#" aria-label="Public website link placeholder">https://YOUR-USERNAME.github.io/YOUR-REPO/</a></li>
+            <li><strong>GitHub Repo:</strong> <a href="#" aria-label="GitHub repo link placeholder">https://github.com/YOUR-USERNAME/YOUR-REPO</a></li>
+          </ul>
+
+          <hr style="border:none;border-top:1px solid var(--line); margin:14px 0;" />
+
+          <p class="muted" style="margin:0;">
+            Tip: In GitHub → <span style="font-family:var(--mono);">Settings → Pages</span>, choose
+            <span style="font-family:var(--mono);">Deploy from branch</span> → <span style="font-family:var(--mono);">main / root</span>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4) SKETCHES / PROTOTYPE -->
+  <section id="prototype">
+    <div class="container">
+      <div class="section-title">
+        <h2>4) Sketches / Prototype Design</h2>
+        <p>Add your screenshots or hand-drawn sketches</p>
+      </div>
+
+      <div class="card">
+        <p class="muted" style="margin:0 0 12px;">
+          Replace the placeholders below with your real images (screenshots or photos). Example:
+          <span style="font-family:var(--mono);">prototype-home.png</span>,
+          <span style="font-family:var(--mono);">quiz-wireframe.jpg</span>
+        </p>
+
+        <div class="proto">
+          <div class="wire">
+            <span class="tag">Prototype: Homepage</span>
+            <p>
+              Insert an image here (logo, hero section, navigation, key sections).
+              <br /><br />
+              ✅ To add an image: put the file in the same folder and use:
+              <span style="font-family:var(--mono);"> &lt;img src="prototype-home.png" /&gt;</span>
+            </p>
+          </div>
+
+          <div class="wire">
+            <span class="tag">Prototype: Pathfinder Quiz</span>
+            <p>
+              Show your quiz layout or decision flow screen.
+              <br /><br />
+              ✅ You can also paste a Figma screenshot or a photo of a hand sketch.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5) ABOUT THE AUTHORS -->
+  <section id="authors">
+    <div class="container">
+      <div class="section-title">
+        <h2>5) About the Authors</h2>
+        <p>Names, roles, skills, motivation, photos</p>
+      </div>
+
+      <div class="grid three">
+        <div class="author">
+          <div class="avatar">A</div>
+          <div>
+            <strong>Author Name 1</strong>
+            <small>Role: Designer • Strength: UI/UX, branding • Motivation: helping students choose confidently</small>
+          </div>
+        </div>
+
+        <div class="author">
+          <div class="avatar">B</div>
+          <div>
+            <strong>Author Name 2</strong>
+            <small>Role: Developer • Strength: HTML/CSS/JS • Motivation: building useful tools for real problems</small>
+          </div>
+        </div>
+
+        <div class="author">
+          <div class="avatar">C</div>
+          <div>
+            <strong>Author Name 3</strong>
+            <small>Role: Researcher • Strength: career research, content • Motivation: making guidance accessible</small>
+          </div>
+        </div>
+      </div>
+
+      <p class="muted" style="margin:12px 0 0;">
+        Add real photos by replacing the avatar block with an <span style="font-family:var(--mono);">&lt;img&gt;</span> tag.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6) ADDITIONAL PROJECT INFORMATION -->
+  <section id="extra">
+    <div class="container">
+      <div class="section-title">
+        <h2>6) Additional Project Information</h2>
+        <p>Timeline, future improvements, charity component (if included)</p>
+      </div>
+
+      <div class="grid two">
+        <div class="card">
+          <h3 style="margin:0 0 10px;">Development Timeline (1 Week Example)</h3>
+          <div class="timeline">
+            <div class="step">
+              <div class="dot" aria-hidden="true"></div>
+              <div>
+                <h4>Day 1 — Research & content plan</h4>
+                <p>Define target audience, main features, and gather resources/links.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="dot" aria-hidden="true"></div>
+              <div>
+                <h4>Day 2–3 — Design prototype</h4>
+                <p>Create wireframes for homepage + quiz flow; decide color scheme and typography.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="dot" aria-hidden="true"></div>
+              <div>
+                <h4>Day 4–5 — Build website</h4>
+                <p>Code HTML/CSS layout, sections, responsiveness; add simple interactions if needed.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="dot" aria-hidden="true"></div>
+              <div>
+                <h4>Day 6 — Test & improve</h4>
+                <p>Check on phone + laptop, fix spacing, update text, validate links.</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="dot" aria-hidden="true"></div>
+              <div>
+                <h4>Day 7 — Deploy</h4>
+                <p>Push to GitHub, enable GitHub Pages, submit public website + repo links.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 8px;">Expected Future Improvements</h3>
+          <ul>
+            <li>Full pathway quiz with scoring and personalized recommendations.</li>
+            <li>User profiles with saved plans and progress tracking.</li>
+            <li>Real database for resources, events, scholarships, internships.</li>
+            <li>Localization (Kazakh/Russian/English) for wider access.</li>
+          </ul>
+
+          <hr style="border:none;border-top:1px solid var(--line); margin:14px 0;" />
+
+          <h3 style="margin:0 0 8px;">Charity Component (Optional)</h3>
+          <p class="muted" style="margin:0;">
+            NorthStar can include a “Pay it forward” model: supporters fund free mentorship sessions
+            or scholarship application workshops for students who cannot afford private guidance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footgrid">
+      <div>
+        <strong style="color:var(--text);">NorthStar</strong>
+        <div class="muted">
+          See the path — not get lost among the options.
+        </div>
+        <div class="muted" style="margin-top:8px;">
+          © <span id="year"></span> NorthStar • Built with HTML + CSS
+        </div>
+      </div>
+
+      <div class="card" style="margin:0;">
+        <strong>Submission checklist</strong>
+        <ul>
+          <li>Public website link (GitHub Pages)</li>
+          <li>GitHub repository link</li>
+          <li>All required sections included</li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Small helper features (optional)
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const toast = document.getElementById("toast");
+    function showToast(text){
+      toast.textContent = text;
+      toast.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => toast.style.display = "none", 2200);
+    }
+
+    document.getElementById("copyLinkBtn").addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(location.href);
+        showToast("Link copied!");
+      }catch(e){
+        showToast("Could not copy. Please copy from the address bar.");
+      }
+    });
+  </script>
+</body>
+</html>
